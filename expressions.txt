@@ -1,0 +1,30 @@
+EXPRESSIONS DU GUIDE : copiez-les depuis ce fichier, une ligne entière à la fois.
+Un PDF coupe les lignes longues et ajoute des espaces au copier-coller ; ce fichier n'en ajoute aucun.
+
+=== DF_Clean_Sessions (Power Query) ===
+
+[Colonne personnalisée duration_min] Formule
+Duration.TotalMinutes([end_time] - [start_time])
+
+=== PL_Charge_Express ===
+
+[Score stations] Paramètre de base threshold (Float)
+@pipeline().parameters.alert_threshold
+
+[Score stations] Paramètre de base run_id (String)
+@pipeline().RunId
+
+[Read score] Valeur de la variable kpi
+@activity('Score stations').output.result.exitValue
+
+[Write message] Valeur de la variable msg
+@if(greater(json(variables('kpi')).alerts, 0), concat('Alerte bornes : ', string(json(variables('kpi')).alerts), ' station(s) au-dessus du seuil de ', string(pipeline().parameters.alert_threshold), '. La pire : ', json(variables('kpi')).worst, ' avec ', string(json(variables('kpi')).worst_pct), ' % de sessions en échec.'), concat('Bornes de recharge : aucune station au-dessus du seuil de ', string(pipeline().parameters.alert_threshold), '. ', string(json(variables('kpi')).sessions), ' sessions, ', string(json(variables('kpi')).energy_kwh), ' kWh livrés.'))
+
+[Post to Teams] Message
+@{variables('msg')}
+
+=== LH_Charge : point de terminaison SQL ===
+
+SELECT station, sessions, failed, failure_rate, energy_kwh, revenue_eur, avg_minutes, alert FROM station_kpi ORDER BY failure_rate DESC;
+
+SELECT 'sessions_raw' AS table_name, COUNT(*) AS lignes FROM sessions_raw UNION ALL SELECT 'sessions', COUNT(*) FROM sessions UNION ALL SELECT 'station_kpi', COUNT(*) FROM station_kpi;
