@@ -9,7 +9,7 @@
 
 Un pipeline Microsoft Fabric Data Factory qui fait travailler ensemble les quatre moteurs de Fabric. Data Factory pose le fichier brut, Power Query le nettoie sans une ligne de code, Spark calcule les indicateurs et rend son verdict, Power BI se met à jour, et l'équipe reçoit le bilan dans Microsoft Teams. Sept activités sur une seule ligne, trois types d'activité nouveaux, et un seuil d'alerte que l'on change au lancement sans toucher au pipeline.
 
-**Guide PDF de 7 pages inclus** : [`Pipeline_Fabric_Guide_5_public.pdf`](Pipeline_Fabric_Guide_5_public.pdf). Chaque activité, chaque champ, chaque expression, et les chiffres à retrouver à l'unité près. Toutes les expressions sont aussi dans [`data/expressions.txt`](data/expressions.txt), prêtes à copier, et le notebook s'importe tel quel : [`data/NB_Score_Stations.ipynb`](data/NB_Score_Stations.ipynb).
+**Guide PDF de 7 pages inclus** : [`Pipeline_Fabric_Guide_5_public.pdf`](Pipeline_Fabric_Guide_5_public.pdf). Chaque activité, chaque champ, chaque expression, et les chiffres à retrouver à l'unité près. Toutes les expressions sont aussi dans [`expressions.txt`](expressions.txt), prêtes à copier, et le notebook s'importe tel quel : [`NB_Score_Stations.ipynb`](NB_Score_Stations.ipynb).
 
 ![Le pipeline PL_Charge_Express](images/pipeline_diagram.svg)
 
@@ -17,11 +17,11 @@ Un pipeline Microsoft Fabric Data Factory qui fait travailler ensemble les quatr
 
 Le pipeline `PL_Charge_Express` après une exécution réussie : sept activités, sept coches vertes, de la copie du fichier brut jusqu'au message posté dans Teams.
 
-![PL_Charge_Express dans Fabric, exécution réussie](images/pipeline_run.png)
+![PL_Charge_Express dans Fabric, exécution réussie](pipeline_run.png)
 
 La table `station_kpi` interrogée dans le point de terminaison SQL du lakehouse : quatre stations, leur taux de sessions en échec, l'énergie livrée et le chiffre d'affaires. Thionville dépasse le seuil d'alerte.
 
-![Le résultat de la requête sur station_kpi](images/sql_results.png)
+![Le résultat de la requête sur station_kpi](sql_results.png)
 
 ## 🎯 Résultats clés
 
@@ -137,7 +137,7 @@ ORDER BY failure_rate DESC;
 ## 📦 Jeu de données
 
 ```
-data/
+fabric-pipeline-express-5/
 ├── sessions_semaine40.csv     1 509 lignes, du 28 septembre au 4 octobre 2026
 ├── NB_Score_Stations.ipynb    le notebook, à importer tel quel dans Fabric
 └── expressions.txt            toutes les expressions du guide, prêtes à copier
@@ -160,11 +160,13 @@ Huit colonnes : `session_id`, `station`, `charger_id`, `start_time`, `end_time`,
 fabric-pipeline-express-5/
 ├── README.md
 ├── Pipeline_Fabric_Guide_5_public.pdf   le guide de 7 pages
-├── data/                               le fichier de sessions, le notebook, les expressions
+├── sessions_semaine40.csv              le fichier de sessions, 1 509 lignes
+├── NB_Score_Stations.ipynb             le notebook, à importer tel quel dans Fabric
+├── expressions.txt                     toutes les expressions du guide, prêtes à copier
+├── pipeline_run.png                    PL_Charge_Express après une exécution réussie
+├── sql_results.png                     la table station_kpi dans le point de terminaison SQL
 └── images/
-    ├── pipeline_diagram.svg            le schéma du pipeline
-    ├── pipeline_run.png                PL_Charge_Express après une exécution réussie
-    └── sql_results.png                 la table station_kpi dans le point de terminaison SQL
+    └── pipeline_diagram.svg            le schéma du pipeline
 ```
 
 ## 🧰 Stack technique
